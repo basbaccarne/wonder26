@@ -1,0 +1,13 @@
+# WONDERfull Stories — per-phone configuration
+# Each phone reads its own copy of this file; only phone_id (via the DIP switch)
+# differs between units, so the same repo can be deployed to all four unchanged.
+
+audio_card:      default    # USB audio — horn earpiece output (waiting/story/hangup sounds)
+audio_card_ring: i2s_amp    # MAX98357A via dmix — external ring speaker
+audio_volume:    80
+
+rings_per_call:  4          # number of rings per unanswered incoming call
+ring_interval:   2          # seconds of silence between rings
+
+shutdown_hour:   22
+shutdown_minute: 0
