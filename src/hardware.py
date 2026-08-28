@@ -7,6 +7,6 @@ button_horn = Button(17)
 story_buttons = {
     1: Button(27),
     2: Button(22),
-    3: Button(23),
-    4: Button(24),
+    3: Button(24),
+    4: Button(23),
 }

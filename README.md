@@ -84,8 +84,8 @@ installation).
 | **horn (hook) button** | GPIO17 and GROUND |
 | **story button 1** | GPIO27 and GROUND |
 | **story button 2** | GPIO22 and GROUND |
-| **story button 3** | GPIO23 and GROUND |
-| **story button 4** | GPIO24 and GROUND |
+| **story button 3** | GPIO24 and GROUND |
+| **story button 4** | GPIO23 and GROUND |
 | **I²S amp (ring speaker)** | LRC → GPIO19 (blue), BCLK → GPIO18 (yellow), DIN → GPIO21 (green), GND → GROUND (black), Vin → 5V (red) |
 | **USB telephone horn (earpiece)** | USB |
 | **power** | USB-C |

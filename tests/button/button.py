@@ -2,14 +2,14 @@ from gpiozero import Button
 from signal import pause
 
 # Connect button_horn to GPIO17 and GROUND
-# Connect story buttons 1-4 to GPIO27, GPIO22, GPIO23, GPIO24 and GROUND
+# Connect story buttons 1-4 to GPIO27, GPIO22, GPIO24, GPIO23 and GROUND
 
 button_horn = Button(17)
 story_buttons = {
     1: Button(27),
     2: Button(22),
-    3: Button(23),
-    4: Button(24),
+    3: Button(24),
+    4: Button(23),
 }
 
 button_horn.when_released = lambda: print("Horn picked up")
