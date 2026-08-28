@@ -1,5 +1,5 @@
 from gpiozero import Button
-import time
+from signal import pause
 
 # Connect button_horn to GPIO17 and GROUND
 # Connect story buttons 1-4 to GPIO27, GPIO22, GPIO23, GPIO24 and GROUND
@@ -12,21 +12,11 @@ story_buttons = {
     4: Button(24),
 }
 
-debounce = 0.3
+button_horn.when_released = lambda: print("Horn picked up")
+button_horn.when_pressed  = lambda: print("Horn replaced")
 
-while True:
-    # --- Horn: trigger on RELEASE (picked up) ---
-    if not button_horn.is_pressed:
-        print("Horn picked up")
-        while not button_horn.is_pressed:
-            time.sleep(0.01)
-        print("Horn replaced")
-        time.sleep(debounce)
+for number, button in story_buttons.items():
+    button.when_pressed = (lambda n: lambda: print(f"Button {n} pressed"))(number)
 
-    # --- Story buttons: trigger on PRESS ---
-    for number, button in story_buttons.items():
-        if button.is_pressed:
-            print(f"Button {number} pressed")
-            while button.is_pressed:
-                time.sleep(0.01)
-            time.sleep(debounce)
+print("Listening for horn and button events (Ctrl+C to exit)...")
+pause()
