@@ -21,6 +21,7 @@ import datetime
 from read_phone_id import read_phone_id
 from states.shared import SharedState
 from led_controller import LEDController
+import logger
 
 # detect DIP position and write to shared state (then all states can access it using SharedState.phone_id)
 SharedState.phone_id = read_phone_id()
@@ -95,12 +96,31 @@ try:
             next_state = module.run()
 
             if next_state:
+                # a session runs from the horn going up (idle -> waiting) to
+                # the horn going back down (any state -> idle)
+                if next_state == "waiting" and state == "idle":
+                    SharedState.session_id, SharedState.session_start = logger.start_session(SharedState.phone_id)
+                    SharedState.session_interactions = 0
+                    print(f"🟢  Session {SharedState.session_id} started")
+                elif next_state == "idle" and state != "idle" and SharedState.session_id is not None:
+                    logger.end_session(SharedState.session_id, SharedState.phone_id,
+                                        SharedState.session_start, SharedState.session_interactions)
+                    print(f"🔴  Session {SharedState.session_id} ended "
+                          f"({SharedState.session_interactions} interaction(s))")
+                    SharedState.session_id = None
+                    SharedState.session_start = None
+
                 print(f"\nSwitching to state: {next_state}")
                 state = next_state
                 led.set_state(state)
 
         except Exception as e:
             print(f"Error in state {state}: {e}")
+            if state != "idle" and SharedState.session_id is not None:
+                logger.end_session(SharedState.session_id, SharedState.phone_id,
+                                    SharedState.session_start, SharedState.session_interactions)
+                SharedState.session_id = None
+                SharedState.session_start = None
             state = "idle"
 
         # Sleep briefly to prevent high CPU usage
@@ -112,6 +132,11 @@ except KeyboardInterrupt:
 
 # Clean up GPIO pin usage on exit
 finally:
+    if SharedState.session_id is not None:
+        logger.end_session(SharedState.session_id, SharedState.phone_id,
+                            SharedState.session_start, SharedState.session_interactions)
+        SharedState.session_id = None
+
     led.stop()
     print("\n🧹   GPIO cleaned up. All set up for a new run!")
     print("-------------------------------\n")

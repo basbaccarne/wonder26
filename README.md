@@ -118,6 +118,8 @@ The same repo and service file are deployed unchanged to all four phones —
 only the DIP switch position differs.
 
 ## Logging
+
+Console/service output:
 ```bash
 sudo python3 -u src/main.py 2>&1 | tee ~/wonder_log.txt
 ```
@@ -125,6 +127,28 @@ Or, once running as a service:
 ```bash
 tail -f /home/pi/log.log
 ```
+
+Usage data, as CSVs in `logs/` (created on first use, git-ignored):
+
+`logs/sessions.csv` — one row per session start/end. A session runs from the
+horn going up to the horn going back down.
+
+| timestamp | event | session_id | phone_id | duration_seconds | interaction_count |
+|---|---|---|---|---|---|
+| 2026-08-29T10:03:12 | start | a1b2c3d4 | 2 | | |
+| 2026-08-29T10:04:47 | end   | a1b2c3d4 | 2 | 95.0 | 2 |
+
+`logs/interactions.csv` — one row every time a story starts playing
+(including switching mid-story):
+
+| timestamp | session_id | phone_id | button |
+|---|---|---|---|
+| 2026-08-29T10:03:20 | a1b2c3d4 | 2 | 3 |
+| 2026-08-29T10:03:55 | a1b2c3d4 | 2 | 1 |
+
+Both files are append-only (rows are never rewritten), so a hard power loss
+at the scheduled shutdown can't corrupt earlier entries. Join the two on
+`session_id` to analyze which stories were picked within which session.
 
 ## Hardware tests
 * [`tests/button/button.py`](/tests/button/button.py) — verify the horn and all four story buttons

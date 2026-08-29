@@ -27,3 +27,8 @@ class SharedState:
     idle_hour_start      = None
     idle_trigger_time    = None
     triggered_this_hour  = False
+
+    # a session runs from horn-up to horn-down; see logger.py
+    session_id           = None
+    session_start        = None
+    session_interactions = 0
