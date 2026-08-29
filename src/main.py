@@ -8,7 +8,7 @@
 # set SharedState.phone_id, which selects which prerecorded stories play on
 # this unit.
 #
-# States: idle -> waiting -> playing -> hangup -> waiting (loop) -> idle
+# States: idle -> waiting -> playing -> waiting (loop) -> idle
 
 import os
 import importlib

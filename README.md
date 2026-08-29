@@ -18,10 +18,11 @@ running fully standalone with no server, network, or LLM involved.
 2. **Waiting** — pick up the horn and a waiting sound loops (orange spinner)
    until you press a button.
 3. **Playing** — press button 1-4 and its prerecorded story plays (cream
-   pulse). Press a different button any time to switch stories immediately.
+   pulse). Each story file is a full montage — dial beep, connection sound,
+   pickup, the voice, and a hang-up sound baked into its own ending — so when
+   it finishes on its own, playback is done and it's straight back to
+   waiting. Press a different button any time to switch stories immediately.
    Replace the horn at any point to hang up and go back to idle.
-4. **Hangup** — when a story finishes on its own, you hear a phone hanging up
-   (two red flashes), then it's back to waiting for the next button.
 
 ```mermaid
 flowchart TB
@@ -30,23 +31,19 @@ flowchart TB
     IDLE(IDLE):::st
     WAITING(WAITING):::st
     PLAYING(PLAYING):::st
-    HANGUP(HANGUP):::st
 
     IDLE -->|horn picked up| WAITING
     WAITING -->|horn replaced| IDLE
     WAITING -->|button pressed| PLAYING
     PLAYING -->|horn replaced| IDLE
     PLAYING -->|different button pressed| PLAYING
-    PLAYING -->|story finished| HANGUP
-    HANGUP -->|horn replaced| IDLE
-    HANGUP -->|click finished| WAITING
+    PLAYING -->|story finished| WAITING
 ```
 
 ## LED ring animations
 * **idle**: slow amber breathe, very dim — dormant, like embers.
 * **waiting**: orange spinner with a fading trail — pick a story.
-* **playing**: soft cream pulse — a story is being told.
-* **hangup**: two quick red flashes — the call has ended.
+* **playing**: soft cream pulse — a story (with its own hang-up sound) is being told.
 
 ---
 

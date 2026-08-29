@@ -1,7 +1,9 @@
 # playing: a prerecorded story is playing for this phone's DIP-switch ID.
-# Replacing the horn aborts straight to idle. Pressing a *different* story
-# button switches immediately, with no hang-up sound. Letting the file play
-# to the end moves on to "hangup" (the click), then back to "waiting".
+# Each button_x.wav is a full montage (dial beep, connection sound, pickup,
+# the voice, and a hang-up sound baked into its own ending), so when it
+# finishes naturally we go straight back to "waiting". Replacing the horn
+# aborts straight to idle. Pressing a *different* story button switches
+# immediately, with no extra sound in between.
 
 import os
 import subprocess
@@ -59,7 +61,7 @@ def run():
         if not os.path.exists(path):
             print(f"[playing] ❌ missing audio: {path}")
             _current_button = None
-            return "hangup"
+            return "waiting"
 
         print(f"🗣️  Playing story {_current_button} for phone {SharedState.phone_id}")
         _process = subprocess.Popen(
@@ -69,11 +71,11 @@ def run():
         )
         return None
 
-    # ── story finished naturally → hang up ────────────────────────────────
+    # ── story finished naturally (hang-up sound is baked into the file) ───
     if _process.poll() is not None:
         print("[playing] ✅ story finished.")
         _process = None
         _current_button = None
-        return "hangup"
+        return "waiting"
 
     return None

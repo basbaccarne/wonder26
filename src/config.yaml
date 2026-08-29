@@ -2,7 +2,7 @@
 # Each phone reads its own copy of this file; only phone_id (via the DIP switch)
 # differs between units, so the same repo can be deployed to all four unchanged.
 
-audio_card:      default    # USB audio — horn earpiece output (waiting/story/hangup sounds)
+audio_card:      default    # USB audio — horn earpiece output (waiting sound and story montages)
 audio_card_ring: i2s_amp    # MAX98357A via dmix — external ring speaker
 audio_volume:    80
 

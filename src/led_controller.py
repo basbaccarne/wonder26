@@ -22,9 +22,6 @@ ORDER           = neopixel.GRB
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Warm palette
-AMBER    = (255, 80,  0)
-GOLD     = (255, 160, 0)
-RED      = (200, 10,  0)
 DIMAMBER = (60,  20,  0)
 ORANGE   = (255, 40,  0)
 CREAM    = (255, 200, 80)
@@ -39,8 +36,7 @@ class LEDController:
     States:
         idle     Slow amber breathe — the phone is quietly waiting on the hook
         waiting  Slow orange spinner — handset is up, pick a story
-        playing  Gentle cream pulse — a story is being told
-        hangup   Two quick red flashes — the call has ended
+        playing  Gentle cream pulse — a story (with its own hang-up sound) is being told
     """
 
     def __init__(self):
@@ -83,7 +79,6 @@ class LEDController:
                 "idle":    self._anim_idle,
                 "waiting": self._anim_waiting,
                 "playing": self._anim_playing,
-                "hangup":  self._anim_hangup,
             }
             anim_fn = animations.get(current, self._anim_idle)
             anim_fn()
@@ -130,17 +125,3 @@ class LEDController:
             self._pixels.fill(scaled)
             self._pixels.show()
             self._sleep(0.018)
-
-    def _anim_hangup(self):
-        """Two quick red flashes — the call has ended."""
-        for _ in range(2):
-            if self._interrupted():
-                return
-            self._pixels.fill(RED)
-            self._pixels.show()
-            self._sleep(0.15)
-            if self._interrupted():
-                return
-            self._pixels.fill((0, 0, 0))
-            self._pixels.show()
-            self._sleep(0.15)
