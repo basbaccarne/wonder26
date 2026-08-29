@@ -1,14 +1,13 @@
 # WONDERfull Stories
 
-WONDERfull Stories reuses the four telephone-booth hardware built for
-[Echoes of Tomorrow](https://github.com/basbaccarne/echoes-of-tomorrow), but
+WONDERfull Stories is a fork of [Echoes of Tomorrow](https://github.com/basbaccarne/echoes-of-tomorrow), but
 drops the live remote-server conversation. Pick up the horn, and one of four
 buttons plays you a different prerecorded story. Let it finish and the phone
 hangs itself up; press another button any time and it switches straight to
 that story instead.
 
 Each of the four phones is set apart by a DIP switch and can hold four
-completely different stories — sixteen in total across the installation, all
+completely different stories (sixteen in total) across the installation, all
 running fully standalone with no server, network, or LLM involved.
 
 ## How it works
@@ -16,9 +15,9 @@ running fully standalone with no server, network, or LLM involved.
 1. **Idle** — handset on the hook. The booth breathes a slow amber glow, and
    roughly once an hour it rings itself a few times to draw attention.
 2. **Waiting** — pick up the horn and a waiting sound loops (orange spinner)
-   until you press a button.
-3. **Playing** — press button 1-4 and its prerecorded story plays (cream
-   pulse). Each story file is a full montage — dial beep, connection sound,
+   until you press a button. A voice instructs you to pick a story, and the LED ring spins in orange with a fading trail.
+3. **Playing** — press button 1-4 and its prerecorded story plays (led: cream
+   pulse). Each story file is a full montage: dial beep, connection sound,
    pickup, the voice, and a hang-up sound baked into its own ending — so when
    it finishes on its own, playback is done and it's straight back to
    waiting. Press a different button any time to switch stories immediately.
@@ -48,11 +47,6 @@ flowchart TB
 ---
 
 # Building the thing
-
-Same hardware as Echoes of Tomorrow, minus the microphone/recording use of
-the horn and minus the server. The main hardware change is **four arcade
-buttons per phone instead of one** (16 buttons total across the
-installation).
 
 🪛 Bill of materials (per phone, ×4 for the full installation)
 | part  | count  | source |
@@ -98,7 +92,7 @@ installation).
 **2. Software**
 1. Initialize the Pi & `sudo apt update && sudo apt upgrade -y`
 2. Install packages — `sudo apt install git i2c-tools python3-pip python3-rpi.gpio -y`
-3. Clone this repo — `git clone https://github.com/basbaccarne/wonderfull-stories /home/pi/wonderfull-stories`
+3. Clone this repo — `git clone https://github.com/basbaccarne/wonder26 /home/pi/wonder26`
 4. Install python libraries — `pip install pyyaml gpiozero smbus2 adafruit-circuitpython-neopixel adafruit-blinka --break-system-packages` (for Pi 5 use `Adafruit-Blinka-Raspberry-Pi5-Neopixel` instead of `adafruit-circuitpython-neopixel`)
 5. Enable I²C in `raspi-config`
 6. Configure I²S audio (see [this readme](/tests/speaker/I2S.md))
@@ -114,10 +108,10 @@ installation).
 9. Drop your story `.wav` files into `audio_files/` — see [audio_files/README.md](/audio_files/README.md) for the exact filenames expected
 10. Install the service
     ```bash
-    sudo cp services/wonderfull-stories.service /etc/systemd/system/
+    sudo cp services/wonder26.service /etc/systemd/system/
     sudo systemctl daemon-reload
-    sudo systemctl enable wonderfull-stories.service
-    sudo systemctl start wonderfull-stories.service
+    sudo systemctl enable wonder26.service
+    sudo systemctl start wonder26.service
     ```
 
 The same repo and service file are deployed unchanged to all four phones —

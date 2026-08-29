@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/home/pi/wonderfull-stories/
+WorkingDirectory=/home/pi/wonder26/
 
 # Log start timestamp
 ExecStartPre=/bin/sh -c 'echo "\n===== START $(date) =====" >> /home/pi/log.log'
@@ -16,11 +16,11 @@ ExecStartPre=/bin/sh -c '\
 echo "Checking network..." >> /home/pi/log.log && \
 timeout 5 /usr/bin/getent hosts github.com > /dev/null && \
 echo "Updating repo..." >> /home/pi/log.log && \
-timeout 15 /usr/bin/git -C /home/pi/wonderfull-stories pull >> /home/pi/log.log 2>&1 || \
+timeout 15 /usr/bin/git -C /home/pi/wonder26 pull >> /home/pi/log.log 2>&1 || \
 echo "No network or git failed, skipping update." >> /home/pi/log.log'
 
 # Run the main Python script
-ExecStart=/usr/bin/python3 /home/pi/wonderfull-stories/src/main.py
+ExecStart=/usr/bin/python3 /home/pi/wonder26/src/main.py
 
 # Logging
 StandardOutput=append:/home/pi/log.log
