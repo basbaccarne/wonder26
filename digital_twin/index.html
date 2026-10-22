@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1e64c8" />
+    <title>Are we ready? — digital twin</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- The two cards share one layout, so they can never overlap: info card
+         at the top and credits at the bottom on wide screens, stacked as a
+         bottom panel on phones. -->
+    <div id="overlay">
+      <!-- Filled in by src/hud.js -->
+      <section id="hud" aria-live="polite"></section>
+      <footer id="credits">
+        <a href="https://studiegids.ugent.be/2025/bachelor-of-science-in-de-industriele-wetenschappen-industrieel-ontwerpen/" target="_blank" rel="noopener">
+          <img src="./src/assets/ugent-campus-kortrijk.png" alt="Universiteit Gent, Campus Kortrijk" />
+          <span>Een installatie van de opleiding <strong>Industrieel Ingenieur: Industrieel Ontwerpen</strong> – UGent Campus Kortrijk.</span>
+        </a>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

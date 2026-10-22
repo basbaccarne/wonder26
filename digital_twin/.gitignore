@@ -1,0 +1,10 @@
+# Dependencies and build output (npm install / npm run build)
+node_modules/
+dist/
+
+# Full-size speaker photos: only the 400×400 web versions are needed
+src/assets/speakers/originals/
+
+# OS clutter
+.DS_Store
+Thumbs.db

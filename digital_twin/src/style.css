@@ -1,0 +1,495 @@
+/* Ghent University styleguide: blue + white, yellow accent, black text;
+   UGent Panno Text with Arial as the official fallback. */
+:root {
+  --ugent-blue: #1e64c8;
+  --ugent-yellow: #ffd200;
+  --ugent-white: #ffffff;
+  --ugent-black: #000000;
+  --ugent-blue10: #e9f0fa; /* 10% tint */
+  --ugent-blue20: #d2e0f4; /* 20% tint */
+  --gap: 16px;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ugent-blue);
+  font-family: "UGent Panno Text", Arial, sans-serif;
+}
+
+canvas {
+  display: block;
+  touch-action: none; /* let OrbitControls handle drag and pinch */
+}
+
+/* --- layout -------------------------------------------------------------- */
+/* One full-screen column holding both cards: info card on top, credits at the
+   bottom. The info card shrinks and scrolls before the two could ever touch.
+   The empty space in between lets clicks through to the 3D scene. */
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  height: 100dvh;
+  box-sizing: border-box;
+  padding: max(var(--gap), env(safe-area-inset-top)) max(var(--gap), env(safe-area-inset-right))
+    max(var(--gap), env(safe-area-inset-bottom)) max(var(--gap), env(safe-area-inset-left));
+  pointer-events: none;
+}
+
+#hud,
+#credits {
+  width: 360px;
+  max-width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: var(--ugent-white);
+  pointer-events: auto;
+}
+
+/* --- info card ----------------------------------------------------------- */
+
+#hud {
+  position: relative;
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px 20px;
+  color: var(--ugent-black);
+  line-height: 1.4;
+}
+
+#hud:empty {
+  display: none;
+}
+
+/* Headings in capitals and underlined, per the styleguide. */
+#hud h1 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-color: var(--ugent-yellow);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  color: var(--ugent-blue);
+}
+
+#hud p {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+#hud .lead {
+  font-size: 15px;
+}
+
+#hud details {
+  margin: 0 0 12px;
+}
+
+#hud summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ugent-blue);
+}
+
+#hud details p {
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+/* Small label above a list, and the line above a heading. */
+#hud .label-small,
+#hud .kicker {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--ugent-blue);
+}
+
+#hud .kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 32px; /* room for the collapse button */
+}
+
+#hud .label-small {
+  margin-top: 4px;
+}
+
+#hud .dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--ugent-blue);
+}
+
+#hud button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Choices that mirror the phones: plain rows with hairline dividers. */
+#hud .choices {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+#hud .choices li + li {
+  border-top: 1px solid var(--ugent-blue10);
+}
+
+#hud .choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px; /* comfortable touch target */
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--ugent-black);
+  font-size: 15px;
+  text-align: left;
+}
+
+#hud .choice:hover {
+  background: var(--ugent-blue10);
+}
+
+#hud .choice::after {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  margin-left: auto;
+  border-top: 1.5px solid var(--ugent-blue);
+  border-right: 1.5px solid var(--ugent-blue);
+  transform: rotate(45deg); /* chevron right */
+}
+
+#hud .num {
+  flex: none;
+  min-width: 18px;
+  color: var(--ugent-blue);
+  font-weight: 600;
+}
+
+#hud .label {
+  display: flex;
+  flex-direction: column;
+}
+
+#hud .sub {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+#hud .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Perspective switch while a story plays: one segmented control. */
+#hud .segmented {
+  display: flex;
+  padding: 3px;
+  border-radius: 22px;
+  background: var(--ugent-blue10);
+}
+
+#hud .segment {
+  width: 40px;
+  height: 38px;
+  border: 0;
+  border-radius: 19px;
+  background: none;
+  color: var(--ugent-blue);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#hud .segment--current {
+  background: var(--ugent-yellow);
+}
+
+#hud .text-button {
+  min-height: 44px;
+  margin-left: auto;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: var(--ugent-blue);
+  font-size: 14px;
+  text-decoration: underline;
+  text-decoration-color: var(--ugent-blue20);
+  text-underline-offset: 4px;
+}
+
+#hud .text-button:hover {
+  text-decoration-color: var(--ugent-blue);
+}
+
+#hud button:focus-visible,
+#hud summary:focus-visible {
+  outline: 2px solid var(--ugent-blue);
+  outline-offset: 2px;
+}
+
+#hud .speaker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 14px;
+}
+
+#hud .avatar {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#hud .avatar--initials {
+  display: grid;
+  place-items: center;
+  background: var(--ugent-blue);
+  color: var(--ugent-yellow);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+#hud .perspective {
+  margin: 0 0 2px;
+  font-size: 12px;
+  color: var(--ugent-blue);
+}
+
+#hud .name {
+  margin: 0 0 2px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+#hud .role {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+#hud .progress {
+  height: 4px;
+  margin-bottom: 12px;
+  border-radius: 2px;
+  background: var(--ugent-blue10);
+  overflow: hidden;
+}
+
+#hud .progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--ugent-yellow);
+}
+
+#hud .hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+#hud .hint:empty {
+  display: none;
+}
+
+#hud .hint--flash {
+  opacity: 1;
+  font-weight: 600;
+  color: var(--ugent-blue);
+}
+
+/* Collapse toggle: only shown on phones (see below). */
+#hud .collapse {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+}
+
+#hud .collapse:hover {
+  background: var(--ugent-blue10);
+}
+
+#hud .collapse::before {
+  content: "";
+  display: block;
+  width: 9px;
+  height: 9px;
+  margin: 10px auto 0;
+  border-right: 1.5px solid var(--ugent-blue);
+  border-bottom: 1.5px solid var(--ugent-blue);
+  transform: rotate(45deg); /* chevron down: collapse */
+}
+
+#hud.collapsed .collapse::before {
+  margin-top: 15px;
+  transform: rotate(-135deg); /* chevron up: expand */
+}
+
+#hud.collapsed .more {
+  display: none;
+}
+
+/* --- credits card -------------------------------------------------------- */
+/* The whole card links to the programme in the UGent study guide. */
+
+#credits {
+  flex: none;
+}
+
+#credits a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  color: rgb(0 0 0 / 0.7);
+  font-size: 12px;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+#credits a:hover strong,
+#credits a:focus-visible strong {
+  text-decoration: underline;
+  text-decoration-color: var(--ugent-yellow);
+  text-decoration-thickness: 2px;
+}
+
+#credits a:focus-visible {
+  outline: 2px solid var(--ugent-blue);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+#credits strong {
+  font-weight: 600;
+  color: var(--ugent-blue);
+}
+
+/* The logo file has a wide white margin; cover-fit crops it to the mark. */
+#credits img {
+  flex: none;
+  width: 110px;
+  height: 60px;
+  object-fit: cover;
+}
+
+/* --- phones: both cards as one bottom panel ------------------------------ */
+/* main.js measures this panel to fit the camera in the space above it. */
+@media (max-width: 700px) {
+  :root {
+    --gap: 10px;
+  }
+
+  #overlay {
+    justify-content: flex-end;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  #hud,
+  #credits {
+    width: auto;
+  }
+
+  #hud {
+    max-height: 52dvh;
+    padding: 12px 16px;
+  }
+
+  #hud .collapse {
+    display: block;
+  }
+
+  #hud h1 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  #hud .avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  #credits a {
+    gap: 10px;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  #credits img {
+    width: 76px;
+    height: 42px;
+  }
+}
+
+/* Short screens (phones in landscape): a tighter column on the left; main.js
+   fits the room in the space to its right. */
+@media (max-height: 520px) and (min-width: 701px) {
+  :root {
+    --gap: 10px;
+  }
+
+  #overlay {
+    gap: 8px;
+  }
+
+  #hud {
+    width: 320px;
+    padding: 12px 16px;
+  }
+
+  #hud .collapse {
+    display: block;
+  }
+
+  #hud h1 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  #credits {
+    width: 320px;
+  }
+
+  #credits a {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  #credits img {
+    width: 70px;
+    height: 38px;
+  }
+}

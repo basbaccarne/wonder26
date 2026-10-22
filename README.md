@@ -10,6 +10,9 @@ Each of the four phones is set apart by a DIP switch and can hold four
 completely different stories (sixteen in total) across the installation, all
 running fully standalone with no server, network, or LLM involved.
 
+A browser version of the installation ("Are we ready?", built with Three.js)
+lives in [digital_twin/](digital_twin/).
+
 ## How it works
 
 1. **Idle** — handset on the hook. The booth breathes a slow amber glow, and
